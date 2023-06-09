@@ -29,6 +29,15 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    greendao {
+        schemaVersion 1 //the version of database
+        daoPackage 'com.ontim.mymonitor.dao'
+        //set DaoMaster、DaoSession、Dao directory/
+        targetGenDir 'src/main/java'
+        generateTests false //set true, generate test code
+        targetGenDirTests 'src/test/java'
+    }
 }
 
 dependencies {
