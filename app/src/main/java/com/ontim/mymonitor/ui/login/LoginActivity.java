@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2023 The ONTIM Technologies Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ontim.mymonitor.ui.login;
 
 import android.app.Activity;
@@ -13,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,6 +46,7 @@ import com.ontim.mymonitor.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 
@@ -67,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
                 if (loginResult == null) {
+                    Log.d(TAG, "login result is null. ");
                     return;
                 }
                 loadingProgressBar.setVisibility(View.GONE);
@@ -77,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                     updateUiWithUser(loginResult.getSuccess());
                 }
                 setResult(Activity.RESULT_OK);
+                Log.d(TAG, "login result is RESULT_OK. ");
 
                 //Complete and destroy login activity once successful
                 finish();
@@ -117,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "start login ... ");
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
@@ -128,9 +149,11 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        Log.d(TAG, "updateUiWithUser ... ");
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
+        Log.d(TAG, "login failed");
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }
