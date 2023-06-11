@@ -24,9 +24,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property UserId = new Property(0, String.class, "userId", false, "USER_ID");
-        public final static Property Username = new Property(1, String.class, "username", false, "USERNAME");
-        public final static Property Password = new Property(2, String.class, "password", false, "PASSWORD");
+        public final static Property Username = new Property(0, String.class, "username", false, "USERNAME");
+        public final static Property Password = new Property(1, String.class, "password", false, "PASSWORD");
     }
 
 
@@ -42,9 +41,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_INFO\" (" + //
-                "\"USER_ID\" TEXT," + // 0: userId
-                "\"USERNAME\" TEXT," + // 1: username
-                "\"PASSWORD\" TEXT);"); // 2: password
+                "\"USERNAME\" TEXT," + // 0: username
+                "\"PASSWORD\" TEXT NOT NULL );"); // 1: password
+        // Add Indexes
+        db.execSQL("CREATE UNIQUE INDEX " + constraint + "IDX_USER_INFO_USERNAME ON \"USER_INFO\"" +
+                " (\"USERNAME\" ASC);");
     }
 
     /** Drops the underlying database table. */
@@ -57,40 +58,22 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
     protected final void bindValues(DatabaseStatement stmt, UserInfo entity) {
         stmt.clearBindings();
  
-        String userId = entity.getUserId();
-        if (userId != null) {
-            stmt.bindString(1, userId);
-        }
- 
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(2, username);
+            stmt.bindString(1, username);
         }
- 
-        String password = entity.getPassword();
-        if (password != null) {
-            stmt.bindString(3, password);
-        }
+        stmt.bindString(2, entity.getPassword());
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, UserInfo entity) {
         stmt.clearBindings();
  
-        String userId = entity.getUserId();
-        if (userId != null) {
-            stmt.bindString(1, userId);
-        }
- 
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(2, username);
+            stmt.bindString(1, username);
         }
- 
-        String password = entity.getPassword();
-        if (password != null) {
-            stmt.bindString(3, password);
-        }
+        stmt.bindString(2, entity.getPassword());
     }
 
     @Override
@@ -101,18 +84,16 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
     @Override
     public UserInfo readEntity(Cursor cursor, int offset) {
         UserInfo entity = new UserInfo( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // userId
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // username
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // password
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // username
+            cursor.getString(offset + 1) // password
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, UserInfo entity, int offset) {
-        entity.setUserId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setUsername(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setPassword(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setUsername(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setPassword(cursor.getString(offset + 1));
      }
     
     @Override

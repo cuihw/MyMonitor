@@ -16,24 +16,50 @@
 
 package com.ontim.mymonitor.data.model;
 
+import com.ontim.mymonitor.data.UserInfo;
+
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
 public class LoggedInUser {
 
-    private String userId;
     private String displayName;
 
-    public LoggedInUser(String userId, String displayName) {
-        this.userId = userId;
-        this.displayName = displayName;
-    }
+    private UserInfo mUserInfo;
 
-    public String getUserId() {
-        return userId;
+    private static LoggedInUser instance;
+
+    //
+    private LoggedInUser() {}
+
+    public static synchronized LoggedInUser getInstance() {
+
+        if (instance == null) {
+            instance = new LoggedInUser();
+        }
+
+        return instance;
     }
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public UserInfo getmUserInfo() {
+        return mUserInfo;
+    }
+
+    public void setmUserInfo(UserInfo mUserInfo) {
+        this.mUserInfo = mUserInfo;
+        displayName = mUserInfo.getUsername();
+    }
+
+    public boolean isLogin() {
+        if (mUserInfo == null) return false;
+        return true;
+    }
+
+    public void logout() {
+        mUserInfo = null;
     }
 }

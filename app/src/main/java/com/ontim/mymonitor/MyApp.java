@@ -12,11 +12,18 @@ public class MyApp extends Application {
     private static final String TAG = "MyApp";
     public static DaoSession mSession;
 
+    private static MyApp myApp;
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Init Database");
         initDb();
+        myApp = this;
+    }
+
+    public static MyApp getMyApp() {
+        return myApp;
     }
 
     /**

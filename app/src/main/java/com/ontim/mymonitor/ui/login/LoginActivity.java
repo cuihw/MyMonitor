@@ -21,6 +21,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -40,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ontim.mymonitor.R;
+import com.ontim.mymonitor.ui.RegisterActivity;
 import com.ontim.mymonitor.ui.login.LoginViewModel;
 import com.ontim.mymonitor.ui.login.LoginViewModelFactory;
 import com.ontim.mymonitor.databinding.ActivityLoginBinding;
@@ -64,6 +66,14 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
+        final Button registerButton = binding.register;
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -150,6 +160,9 @@ public class LoginActivity extends AppCompatActivity {
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Log.d(TAG, "updateUiWithUser ... ");
+
+        // enter main screen
+
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {

@@ -18,45 +18,38 @@ package com.ontim.mymonitor.data;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.NotNull;
+import org.jetbrains.annotations.PropertyKey;
 
 @Entity
 public class UserInfo {
-    private String userId;
+
+    @Index(unique = true)
     private String username;
+
+    @NotNull
     private String password;
 
-    @Generated(hash = 2038630508)
-    public UserInfo(String userId, String username, String password) {
-        this.userId = userId;
+    @Generated(hash = 2001912601)
+    public UserInfo(String username, @NotNull String password) {
         this.username = username;
         this.password = password;
     }
-
     @Generated(hash = 1279772520)
     public UserInfo() {
     }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getUsername() {
-        return username;
+        return this.username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
-
     public String getPassword() {
-        return password;
+        return this.password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
