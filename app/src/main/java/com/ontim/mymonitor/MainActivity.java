@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.app.ActivityCompat;
@@ -43,6 +44,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private static final int GET_PERMISSION_REQUEST = 1;
+    private static final String TAG = "MainActivity";
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        binding.fab.setVisibility(View.GONE);
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        getPermissions();
     }
 
     @Override
@@ -129,23 +133,26 @@ public class MainActivity extends AppCompatActivity {
                 //读写内存权限
                 boolean writeGranted = writeResult == PackageManager.PERMISSION_GRANTED;//读写内存权限
                 if (!writeGranted) {
+                    Log.d(TAG, "writeGranted: false");
                     size++;
                 }
                 //录音权限
                 int recordPermissionResult = grantResults[1];
                 boolean recordPermissionGranted = recordPermissionResult == PackageManager.PERMISSION_GRANTED;
                 if (!recordPermissionGranted) {
+                    Log.d(TAG, "recordPermissionGranted: false");
                     size++;
                 }
                 //相机权限
                 int cameraPermissionResult = grantResults[2];
                 boolean cameraPermissionGranted = cameraPermissionResult == PackageManager.PERMISSION_GRANTED;
                 if (!cameraPermissionGranted) {
+                    Log.d(TAG, "cameraPermissionGranted: false");
                     size++;
                 }
                 if (size == 0) {
                     mGranted = true;
-                }else{
+                } else {
                     Toast.makeText(this, "请到设置-权限管理中开启", Toast.LENGTH_SHORT).show();
                     finish();
                 }

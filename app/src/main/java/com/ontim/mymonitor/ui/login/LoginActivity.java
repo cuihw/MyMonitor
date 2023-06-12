@@ -40,6 +40,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ontim.mymonitor.CachedInfo;
 import com.ontim.mymonitor.MainActivity;
 import com.ontim.mymonitor.R;
 import com.ontim.mymonitor.data.model.LoggedInUser;
@@ -60,6 +61,10 @@ public class LoginActivity extends AppCompatActivity {
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (CachedInfo.isLogin) {
+            goToMainActivity();
+        }
 
         if (LoggedInUser.getInstance().isLogin()) {
             goToMainActivity();
