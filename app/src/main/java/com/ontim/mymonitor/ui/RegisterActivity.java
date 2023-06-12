@@ -2,6 +2,7 @@ package com.ontim.mymonitor.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.ontim.mymonitor.MainActivity;
 import com.ontim.mymonitor.MyApp;
 import com.ontim.mymonitor.R;
 import com.ontim.mymonitor.Util.ToastUtil;
@@ -69,8 +71,14 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "createNewUser successful!");
 
         LoggedInUser.getInstance().setmUserInfo(userInfo);
-    }
 
+        goToMainActivity();
+
+    }
+    private void goToMainActivity() {
+        Intent intent = new Intent( this, MainActivity.class);
+        startActivity(intent);
+    }
     // A placeholder username validation check
     private boolean isUserNameValid(String username) {
         if (username == null) {

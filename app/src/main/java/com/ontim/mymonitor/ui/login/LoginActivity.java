@@ -40,7 +40,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ontim.mymonitor.MainActivity;
 import com.ontim.mymonitor.R;
+import com.ontim.mymonitor.data.model.LoggedInUser;
 import com.ontim.mymonitor.ui.RegisterActivity;
 import com.ontim.mymonitor.ui.login.LoginViewModel;
 import com.ontim.mymonitor.ui.login.LoginViewModelFactory;
@@ -58,6 +60,10 @@ public class LoginActivity extends AppCompatActivity {
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (LoggedInUser.getInstance().isLogin()) {
+            goToMainActivity();
+        }
 
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -155,6 +161,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void goToMainActivity() {
+        Intent intent = new Intent( this, MainActivity.class);
+        startActivity(intent);
+    }
+
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
@@ -162,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "updateUiWithUser ... ");
 
         // enter main screen
-
+        goToMainActivity();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
