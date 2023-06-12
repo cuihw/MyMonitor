@@ -17,19 +17,38 @@
 package com.ontim.mymonitor;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.video.Recording;
+import androidx.camera.video.VideoCapture;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.ontim.mymonitor.databinding.FragmentFirstBinding;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 
 public class FirstFragment extends Fragment {
 
+    private static final String TAG = "FirstFragment";
     private FragmentFirstBinding binding;
+
+    VideoCapture mVideoCapture;
+    Recording recording;
+
+    ExecutorService cameraExecutor;
+
 
     @Override
     public View onCreateView(
@@ -52,6 +71,47 @@ public class FirstFragment extends Fragment {
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startCamera();
+        captureVideo();
+
+    }
+    private void startCamera() {
+
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
+
+        cameraProviderFuture.addListener(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "runnable...");
+                try {
+                    ProcessCameraProvider cameraProvider = (ProcessCameraProvider)cameraProviderFuture.get();
+                    Preview preview = new Preview.Builder().build();
+                    preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
+                    CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+                    cameraProvider.unbindAll();
+
+                    // Bind use cases to camera
+                    cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, preview);
+
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }catch ( Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            }, ContextCompat.getMainExecutor(getContext()));
+    }
+
+    private void captureVideo() {
+        Log.d(TAG, "captureVideo");
     }
 
     @Override
