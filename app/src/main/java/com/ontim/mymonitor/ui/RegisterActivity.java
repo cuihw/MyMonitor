@@ -78,12 +78,14 @@ public class RegisterActivity extends AppCompatActivity {
     private void goToMainActivity() {
         Intent intent = new Intent( this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
     // A placeholder username validation check
     private boolean isUserNameValid(String username) {
         if (username == null) {
             return false;
         }
+
         if (username.contains("@")) {
             return Patterns.EMAIL_ADDRESS.matcher(username).matches();
         } else {

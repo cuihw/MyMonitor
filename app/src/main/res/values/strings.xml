@@ -24,4 +24,9 @@
     <string name="rear_carmer">"Rear camera"</string>
     <string name="switch_camera">"Shift camera"</string>
 
+    <string name="back_button_alt">Back</string>
+    <string name="video_viewer_tips">Tips for the page:\n\t- tap anywhere to replay\n\t- tap system back button to go back</string>
+    <string name="action_view_video">Manager Video</string>
+    <string name="action_logout">Log Out</string>
+
 </resources>

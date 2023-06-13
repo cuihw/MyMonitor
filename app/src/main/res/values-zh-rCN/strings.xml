@@ -23,4 +23,9 @@
     <string name="front_carmer">"前  相  机"</string>
     <string name="rear_carmer">"后  相  机"</string>
     <string name="switch_camera">"切换相机"</string>
+    <string name="back_button_alt">返回</string>
+    <string name="video_viewer_tips">Tips for the page:\n\t- tap anywhere to replay\n\t- tap system back button to go back</string>
+
+    <string name="action_view_video">查看视频</string>
+    <string name="action_logout">退出登陆</string>
 </resources>
