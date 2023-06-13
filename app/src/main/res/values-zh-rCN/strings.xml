@@ -20,6 +20,7 @@
     <string name="invalid_password">密码长度必须 > 5 个字符</string>
     <string name="login_failed">"登陆失败"</string>
     <string name="label_settings">"设置"</string>
-    <string name="front_carmer">"Front carmer"</string>
-    <string name="rear_carmer">"Rear carmer"</string>
+    <string name="front_carmer">"前  相  机"</string>
+    <string name="rear_carmer">"后  相  机"</string>
+    <string name="switch_camera">"切换相机"</string>
 </resources>

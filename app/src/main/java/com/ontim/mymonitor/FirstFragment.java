@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.camera.core.CameraSelector;
@@ -30,8 +31,6 @@ import androidx.camera.video.Recording;
 import androidx.camera.video.VideoCapture;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.ontim.mymonitor.databinding.FragmentFirstBinding;
@@ -44,10 +43,16 @@ public class FirstFragment extends Fragment {
     private static final String TAG = "FirstFragment";
     private FragmentFirstBinding binding;
 
+    // default use rear camera.
+    private static CameraSelector mCurCameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA;
+
     VideoCapture mVideoCapture;
     Recording recording;
 
     ExecutorService cameraExecutor;
+
+    TextView mTextView;
+
 
 
     @Override
@@ -55,10 +60,9 @@ public class FirstFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentFirstBinding.inflate(inflater, container, false);
+        mTextView = binding.cameraIndexText;
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -67,8 +71,18 @@ public class FirstFragment extends Fragment {
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+//                NavHostFragment.findNavController(FirstFragment.this)
+//                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                if (mCurCameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) {
+                    mCurCameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+                    mTextView.setText(R.string.rear_carmer);
+
+                } else {
+                    mCurCameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA;
+                    mTextView.setText(R.string.front_carmer);
+                }
+
+                startCamera();
             }
         });
     }
@@ -78,40 +92,44 @@ public class FirstFragment extends Fragment {
         super.onResume();
         startCamera();
         captureVideo();
-
     }
+
+    ListenableFuture<ProcessCameraProvider> mCameraProviderFuture;
+
     private void startCamera() {
 
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
+        if (mCameraProviderFuture == null) {
+            mCameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
+        }
 
-        cameraProviderFuture.addListener(new Runnable() {
+        mCameraProviderFuture.addListener(new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "runnable...");
                 try {
-                    ProcessCameraProvider cameraProvider = (ProcessCameraProvider)cameraProviderFuture.get();
+                    ProcessCameraProvider cameraProvider = (ProcessCameraProvider) mCameraProviderFuture.get();
                     Preview preview = new Preview.Builder().build();
                     preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
-                    CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+                    CameraSelector cameraSelector = mCurCameraSelector;
                     cameraProvider.unbindAll();
-
                     // Bind use cases to camera
                     cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, preview);
-
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }catch ( Exception e) {
+                } catch ( Exception e) {
                     e.printStackTrace();
                 }
-
             }
             }, ContextCompat.getMainExecutor(getContext()));
     }
 
     private void captureVideo() {
         Log.d(TAG, "captureVideo");
+
+
+
     }
 
     @Override

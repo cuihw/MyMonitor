@@ -4,10 +4,15 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.camera.camera2.Camera2Config;
+import androidx.camera.core.CameraXConfig;
+
+import com.ontim.mymonitor.Util.SharedPreferencesUtil;
 import com.ontim.mymonitor.dao.DaoMaster;
 import com.ontim.mymonitor.dao.DaoSession;
 
-public class MyApp extends Application {
+public class MyApp extends Application implements CameraXConfig.Provider {
 
     private static final String TAG = "MyApp";
     public static DaoSession mSession;
@@ -19,6 +24,7 @@ public class MyApp extends Application {
         super.onCreate();
         Log.d(TAG, "Init Database");
         initDb();
+        SharedPreferencesUtil.initSharedPerferences(getApplicationContext());
         myApp = this;
     }
 
@@ -27,21 +33,27 @@ public class MyApp extends Application {
     }
 
     /**
-     * 连接数据库并创建会话
+     * init db
      */
     public void initDb() {
-        // 1、获取需要连接的数据库
+        // 1、create a database.
         DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, "data.db");
         SQLiteDatabase db = devOpenHelper.getWritableDatabase();
-        // 2、创建数据库连接
+        // 2、create the data connection.
         DaoMaster daoMaster = new DaoMaster(db);
-        // 3、创建数据库会话
+        // 3、create the database session.
         mSession = daoMaster.newSession();
     }
 
-    // 供外接使用
+    // mothed: getDaoSession
     public DaoSession getDaoSession() {
         return mSession;
     }
 
+    @NonNull
+    @Override
+    public CameraXConfig getCameraXConfig() {
+        return CameraXConfig.Builder.fromConfig(Camera2Config.defaultConfig())
+                .setMinimumLoggingLevel(Log.INFO).build();
+    }
 }

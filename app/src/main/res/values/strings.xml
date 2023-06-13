@@ -20,7 +20,8 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="label_settings">"Settings"</string>
-    <string name="front_carmer">"Front carmer"</string>
-    <string name="rear_carmer">"Rear carmer"</string>
+    <string name="front_carmer">"Front camera"</string>
+    <string name="rear_carmer">"Rear camera"</string>
+    <string name="switch_camera">"Shift camera"</string>
 
 </resources>

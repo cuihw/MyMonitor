@@ -9,10 +9,23 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
     <TextView
-        android:id="@+id/textview_first"
+        android:id="@+id/time_stamp_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/text_back_color"
+        android:text="Time: 2023-06-13-11:41:25"
+        app:layout_constraintBaseline_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/camera_index_text"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/front_carmer"
@@ -27,8 +40,8 @@
     <Button
         android:id="@+id/button_first"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="@string/label_settings"
+        android:layout_height="80dp"
+        android:text="@string/switch_camera"
         android:layout_margin="50dp"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
