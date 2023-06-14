@@ -24,6 +24,20 @@ import android.content.SharedPreferences;
  */
 public class SharedPreferencesUtil {
 
+    //  1. front, back camera.   back: 0  front: 1
+    //  2. setting the Quality of video
+    /*
+    public static final int QUALITY_1080P = 6;
+    public static final int QUALITY_480P = 4;
+    public static final int QUALITY_720P = 5;
+    public static final int QUALITY_2160P = 8;
+    public static final int QUALITY_CIF = 3;
+    public static final int QUALITY_HIGH = 1;
+    public static final int QUALITY_LOW = 0;
+    */
+
+
+
     private static Context mContext;
 
     public static void initSharedPerferences(Context context) {

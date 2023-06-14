@@ -7,7 +7,7 @@
     tools:context=".FirstFragment">
 
     <androidx.camera.view.PreviewView
-        android:id="@+id/viewFinder"
+        android:id="@+id/preview_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
@@ -20,6 +20,21 @@
         android:background="@color/text_back_color"
         android:text="Time: 2023-06-13-11:41:25"
         app:layout_constraintBaseline_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <!--  below to time_stamp_info
+      app:layout_constraintTop_toBottomOf="@+id/time_stamp_info"-->
+    <TextView
+        android:id="@+id/record_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/text_back_color"
+        android:layout_marginTop="20dp"
+        android:text="fdsafds"
+        app:layout_constraintTop_toBottomOf="@+id/time_stamp_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
